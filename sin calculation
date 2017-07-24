@@ -1,0 +1,31 @@
+Code to approximating the sine function with Maclaurin Series using python
+
+from decimal import Decimal, getcontext
+import math
+import collections
+
+getcontext().prec = 1000	
+
+Result = collections.namedtuple('Result', 'input computed iterations target')     
+
+>>> def sin(x, prec=4):
+    target = Decimal(math.sin(x))
+    n, result = 0, x
+
+    while True:
+        if result < target:
+            if (abs(result - target) < 1*(10**-prec)):
+                break
+
+        n += 1
+        positive_or_negative = (-1)**n
+        numerator = x**((2*n)+1)
+        denominator =  Decimal(math.factorial(((2*n)+1)))
+        computed = positive_or_negative * (numerator/denominator)
+        result += computed
+    return Result(input=x, computed=round(result, prec), iterations=n, target=round(target, prec))
+SyntaxError: invalid syntax
+>>> if __name__ == "__main__":
+    for i in [10,20,30,40,50,60,70,80,90,100]:
+        print(sin(i))
+
